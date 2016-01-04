@@ -49,11 +49,27 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(158);
 
-	ReactDOM.render(React.createElement(
-		'h1',
-		null,
-		'Hello, world!'
-	), document.getElementById('hello'));
+	var HelloWorld = React.createClass({
+		displayName: 'HelloWorld',
+
+		render: function render() {
+			return React.createElement(
+				'p',
+				null,
+				'안녕, ',
+				React.createElement('input', { type: 'text', placeholder: '이름을 여기에 작성하세요.' }),
+				'!',
+				React.createElement('br', null),
+				'지금 시간은 ',
+				this.props.date.toTimeString(),
+				' 입니다.'
+			);
+		}
+	});
+
+	setInterval(function () {
+		ReactDOM.render(React.createElement(HelloWorld, { date: new Date() }), document.getElementById('hello'));
+	}, 500);
 
 /***/ },
 /* 1 */

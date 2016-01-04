@@ -47,12 +47,13 @@
 	'use strict';
 
 	var React = __webpack_require__(1);
+	var ReactDOM = __webpack_require__(158);
 
-	React.render(React.createElement(
+	ReactDOM.render(React.createElement(
 		'h1',
 		null,
 		'Hello, world!'
-	), document.body);
+	), document.getElementById('hello'));
 
 /***/ },
 /* 1 */
@@ -19633,6 +19634,15 @@
 
 	module.exports = deprecated;
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
+
+/***/ },
+/* 158 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	module.exports = __webpack_require__(3);
+
 
 /***/ }
 /******/ ]);

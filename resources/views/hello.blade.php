@@ -5,6 +5,7 @@
 	<title>react</title>
 </head>
 <body>
+	<div id="hello"></div>
 	<script type="text/javascript" src="js/bundle.js"></script>
 </body>
 </html>

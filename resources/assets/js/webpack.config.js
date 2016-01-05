@@ -1,6 +1,6 @@
 var config = {
 	entry: {
-		bundle: './entry.jsx',
+		james: '../jsx/james.jsx',
 	},
 	output: {
 		path: '../../../public/js',

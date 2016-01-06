@@ -31,34 +31,37 @@ var ContactForm = React.createClass({
     onChange: React.PropTypes.func.isRequired,
   },
 
-  render: function() {
-    var oldContact = this.props.value;
-    var onChange = this.props.onChange;
+  onNameChange: function(e) {
+  	this.props.onChange(Object.assign({}, this.props.value, {name: e.target.value}))
+  },
 
+  onEmailChange: function(e) {
+  	this.props.onChange(Object.assign({}, this.props.value, {email: e.target.value}))
+  },
+
+  onDescriptionChange: function(e) {
+  	this.props.onChange(Object.assign({}, this.props.value, {description: e.target.value}))
+  },
+
+  render: function() {
     return (
       React.createElement('form', {className: 'ContactForm'},
         React.createElement('input', {
           type: 'text',
           placeholder: 'Name (required)',
           value: this.props.value.name,
-          onChange: function(e) {
-            onChange(Object.assign({}, oldContact, {name: e.target.value}));
-          },
+          onInput: this.onNameChange,
         }),
         React.createElement('input', {
           type: 'email',
           placeholder: 'Email',
           value: this.props.value.email,
-          onChange: function(e) {
-            onChange(Object.assign({}, oldContact, {email: e.target.value}));
-          },
+          onChange: this.onEmailChange,
         }),
         React.createElement('textarea', {
           placeholder: 'Description',
           value: this.props.value.description,
-          onChange: function(e) {
-            onChange(Object.assign({}, oldContact, {description: e.target.value}));
-          },
+          onChange: this.onDescriptionChange,
         }),
         React.createElement('button', {type: 'submit'}, "Add Contact")
       )
@@ -70,6 +73,7 @@ var ContactView = React.createClass({
   propTypes: {
     contacts: React.PropTypes.array.isRequired,
     newContact: React.PropTypes.object.isRequired,
+    onNewContactChange: React.PropTypes.func.isRequired,
   },
 
   render: function() {
@@ -83,7 +87,7 @@ var ContactView = React.createClass({
         React.createElement('ul', {className: 'ContactView-list'}, contactItemElements),
         React.createElement(ContactForm, {
         	value: this.props.newContact,
-        	onChange: function(contact) { console.log(contact) },
+        	onChange: this.props.onNewContactChange,
         })
       )
     )
@@ -92,26 +96,39 @@ var ContactView = React.createClass({
 
 
 /*
- * Data
+ * Actions
  */
 
-var contacts = [
-  {key: 1, name: "James K Nelson", email: "james@jamesknelson.com", description: "Front-end Unicorn"},
-  {key: 2, name: "Jim", email: "jim@example.com"},
-  {key: 3, name: "Joe"},
-]
-
-var newContact = {name: "", email: "", description: ""}
+function updateNewContact(contact) {
+  setState({ newContact: contact });
+}
 
 
 /*
- * Entry point
+ * Model
  */
 
-ReactDOM.render(
-  React.createElement(ContactView, {
-    contacts: contacts,
-    newContact: newContact,
-  }),
-  document.getElementById('react-app')
-)
+
+// The app's complete current state
+var state = {};
+
+// Make the given changes to the state and perform any required housekeeping
+function setState(changes) {
+  Object.assign(state, changes);
+  
+  ReactDOM.render(
+    React.createElement(ContactView, Object.assign({}, state, {
+      onNewContactChange: updateNewContact,
+    })),
+    document.getElementById('react-app')
+  );
+}
+
+// Set initial data
+setState({
+  contacts: [
+    {key: 1, name: "James K Nelson", email: "james@jamesknelson.com", description: "Front-end Unicorn"},
+    {key: 2, name: "Jim", email: "jim@example.com"},
+  ],
+  newContact: {name: "", email: "", description: ""},
+});

@@ -1,22 +1,12 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
-
-
-/*
- * Data
- */
-var contacts = [
-  {key: 1, name: "James K Nelson", email: "james@jamesknelson.com", description: "Front-end Unicorn"},
-  {key: 2, name: "Jim", email: "jim@example.com"},
-  {key: 3, name: "Joe"},
-]
-
-var newContact = {name: "", email: "", description: ""}
+require("!style!css!../css/style.css");
 
 
 /*
  * Components
  */
+
 var ContactItem = React.createClass({
   propTypes: {
     name: React.PropTypes.string.isRequired,
@@ -25,15 +15,11 @@ var ContactItem = React.createClass({
   },
 
   render: function() {
-    // I wrap mult-line return statements in parentheses to avoid the
-    // inevitable bugs caused by forgetting that JavaScript will throw away
-    // the final lines when possible. The parentheses are not strictly
-    // necessary.
     return (
-      React.createElement('li', {},
-        React.createElement('h2', {}, this.props.name),
-        React.createElement('a', {href: 'mailto:'+this.props.email}, this.props.email),
-        React.createElement('div', {}, this.props.description)
+      React.createElement('li', {className: 'ContactItem'},
+        React.createElement('h2', {className: 'ContactItem-name'}, this.props.name),
+        React.createElement('a', {className: 'ContactItem-email', href: 'mailto:'+this.props.email}, this.props.email),
+        React.createElement('div', {className: 'ContactItem-description'}, this.props.description)
       )
     )
   },
@@ -46,7 +32,7 @@ var ContactForm = React.createClass({
 
   render: function() {
     return (
-      React.createElement('form', {},
+      React.createElement('form', {className: 'ContactForm'},
         React.createElement('input', {
           type: 'text',
           placeholder: 'Name (required)',
@@ -67,19 +53,49 @@ var ContactForm = React.createClass({
   },
 })
 
+var ContactView = React.createClass({
+  propTypes: {
+    contacts: React.PropTypes.array.isRequired,
+    newContact: React.PropTypes.object.isRequired,
+  },
+
+  render: function() {
+    var contactItemElements = this.props.contacts
+      .filter(function(contact) { return contact.email })
+      .map(function(contact) { return React.createElement(ContactItem, contact) })
+
+    return (
+      React.createElement('div', {className: 'ContactView'},
+        React.createElement('h1', {className: 'ContactView-title'}, "Contacts"),
+        React.createElement('ul', {className: 'ContactView-list'}, contactItemElements),
+        React.createElement(ContactForm, {contact: this.props.newContact})
+      )
+    )
+  },
+})
+
 
 /*
- * Render
+ * Data
  */
-var contactItemElements = contacts
-  .filter(function(contact) { return contact.email })
-  .map(function(contact) { return React.createElement(ContactItem, contact) })
 
-var rootElement =
-  React.createElement('div', {}, 
-    React.createElement('h1', {}, "Contacts"),
-    React.createElement('ul', {}, contactItemElements),
-    React.createElement(ContactForm, {contact: newContact})
-  )
+var contacts = [
+  {key: 1, name: "James K Nelson", email: "james@jamesknelson.com", description: "Front-end Unicorn"},
+  {key: 2, name: "Jim", email: "jim@example.com"},
+  {key: 3, name: "Joe"},
+]
 
-ReactDOM.render(rootElement, document.getElementById('react-app'))
+var newContact = {name: "", email: "", description: ""}
+
+
+/*
+ * Entry point
+ */
+
+ReactDOM.render(
+  React.createElement(ContactView, {
+    contacts: contacts,
+    newContact: newContact
+  }),
+  document.getElementById('react-app')
+)

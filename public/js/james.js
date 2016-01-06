@@ -72,21 +72,34 @@
 	  displayName: 'ContactForm',
 
 	  propTypes: {
-	    contact: React.PropTypes.object.isRequired
+	    value: React.PropTypes.object.isRequired,
+	    onChange: React.PropTypes.func.isRequired
 	  },
 
 	  render: function render() {
+	    var oldContact = this.props.value;
+	    var _onChange = this.props.onChange;
+
 	    return React.createElement('form', { className: 'ContactForm' }, React.createElement('input', {
 	      type: 'text',
 	      placeholder: 'Name (required)',
-	      value: this.props.contact.name
+	      value: this.props.value.name,
+	      onChange: function onChange(e) {
+	        _onChange(Object.assign({}, oldContact, { name: e.target.value }));
+	      }
 	    }), React.createElement('input', {
 	      type: 'email',
 	      placeholder: 'Email',
-	      value: this.props.contact.email
+	      value: this.props.value.email,
+	      onChange: function onChange(e) {
+	        _onChange(Object.assign({}, oldContact, { email: e.target.value }));
+	      }
 	    }), React.createElement('textarea', {
 	      placeholder: 'Description',
-	      value: this.props.contact.description
+	      value: this.props.value.description,
+	      onChange: function onChange(e) {
+	        _onChange(Object.assign({}, oldContact, { description: e.target.value }));
+	      }
 	    }), React.createElement('button', { type: 'submit' }, "Add Contact"));
 	  }
 	});
@@ -106,7 +119,12 @@
 	      return React.createElement(ContactItem, contact);
 	    });
 
-	    return React.createElement('div', { className: 'ContactView' }, React.createElement('h1', { className: 'ContactView-title' }, "Contacts"), React.createElement('ul', { className: 'ContactView-list' }, contactItemElements), React.createElement(ContactForm, { contact: this.props.newContact }));
+	    return React.createElement('div', { className: 'ContactView' }, React.createElement('h1', { className: 'ContactView-title' }, "Contacts"), React.createElement('ul', { className: 'ContactView-list' }, contactItemElements), React.createElement(ContactForm, {
+	      value: this.props.newContact,
+	      onChange: function onChange(contact) {
+	        console.log(contact);
+	      }
+	    }));
 	  }
 	});
 

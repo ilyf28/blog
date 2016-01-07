@@ -12,23 +12,10 @@
   </head>
   <body>
     <div id="content"></div>
-    <!-- <script type="text/babel" src="scripts/example.js"></script> -->
+    <script type="text/babel" src="js/tutorial.js"></script>
     <script type="text/babel">
       // To get started with this tutorial running your own code, simply remove
       // the script tag loading scripts/example.js and start writing code here.
-      var CommentBox = React.createClass({displayName: 'CommentBox',
-        render: function() {
-          return (
-            React.createElement('div', {className: "commentBox"},
-              "Hello, world! I am a CommentBox."
-            )
-          );
-        }
-      });
-      ReactDOM.render(
-        React.createElement(CommentBox, null),
-        document.getElementById('content')
-      );
     </script>
   </body>
 </html>

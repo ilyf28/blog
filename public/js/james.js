@@ -95,13 +95,17 @@
 	  },
 
 	  render: function render() {
+	    var errors = this.props.value.errors || {};
+
 	    return React.createElement('form', { className: 'ContactForm', onSubmit: this.onSubmit, noValidate: true }, React.createElement('input', {
 	      type: 'text',
+	      className: errors.name && 'ContactForm-error',
 	      placeholder: 'Name (required)',
 	      value: this.props.value.name,
 	      onInput: this.onNameChange
 	    }), React.createElement('input', {
 	      type: 'email',
+	      className: errors.email && 'ContactForm-error',
 	      placeholder: 'Email (required)',
 	      value: this.props.value.email,
 	      onChange: this.onEmailChange
@@ -155,12 +159,19 @@
 	function submitNewContact() {
 	  var contact = Object.assign({}, state.newContact, { key: state.contacts.length + 1, errors: {} });
 
-	  if (contact.name && contact.email) {
-	    setState(Object.keys(contact.errors).length === 0 ? {
-	      newContact: Object.assign({}, CONTACT_TEMPLATE),
-	      contacts: state.contacts.slice(0).concat(contact)
-	    } : { newContact: contact });
+	  if (!contact.name) {
+	    contact.errors.name = ["Please enter your new contact's name"];
 	  }
+	  if (!/.+@.+\..+/.test(contact.email)) {
+	    contact.errors.email = ["Please enter your new contact's email"];
+	  }
+
+	  // if (contact.name && contact.email) {
+	  setState(Object.keys(contact.errors).length === 0 ? {
+	    newContact: Object.assign({}, CONTACT_TEMPLATE),
+	    contacts: state.contacts.slice(0).concat(contact)
+	  } : { newContact: contact });
+	  // }
 	}
 
 	/*
@@ -19810,7 +19821,7 @@
 
 
 	// module
-	exports.push([module.id, "body {\n  font-family: Tahoma, sans-serif;\n  margin: 0;\n}\n\n.ContactView-title {\n  font-size: 24px;\n  padding: 0 24px;\n}\n\n.ContactView-list {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n  border-top: 1px solid #f0f0f0;\n}\n\n.ContactItem {\n  margin: 0;\n  padding: 8px 24px;\n  border-bottom: 1px solid #f0f0f0;\n}\n.ContactItem-name {\n  font-size: 16px;\n  font-weight: bold;\n  margin: 0;\n}\n.ContactItem-email {\n  font-size: 14px;\n  margin-top: 4px;\n  font-style: italic;\n  color: #888;\n}\n.ContactItem-description {\n  font-size: 14px;\n  margin-top: 4px;\n}\n\n\n.ContactForm {\n  padding: 8px 24px;\n}\n.ContactForm > input,\n.ContactForm > textarea {\n  display: block;\n  width: 240px;\n  padding: 4px 8px;\n  margin-bottom: 8px;\n  border-radius: 3px;\n  border: 1px solid #888;\n  font-size: 14px;\n}", ""]);
+	exports.push([module.id, "body {\n  font-family: Tahoma, sans-serif;\n  margin: 0;\n}\n\n.ContactView-title {\n  font-size: 24px;\n  padding: 0 24px;\n}\n\n.ContactView-list {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n  border-top: 1px solid #f0f0f0;\n}\n\n.ContactItem {\n  margin: 0;\n  padding: 8px 24px;\n  border-bottom: 1px solid #f0f0f0;\n}\n.ContactItem-name {\n  font-size: 16px;\n  font-weight: bold;\n  margin: 0;\n}\n.ContactItem-email {\n  font-size: 14px;\n  margin-top: 4px;\n  font-style: italic;\n  color: #888;\n}\n.ContactItem-description {\n  font-size: 14px;\n  margin-top: 4px;\n}\n\n\n.ContactForm {\n  padding: 8px 24px;\n}\n.ContactForm > input,\n.ContactForm > textarea {\n  display: block;\n  width: 240px;\n  padding: 4px 8px;\n  margin-bottom: 8px;\n  border-radius: 3px;\n  border: 1px solid #888;\n  font-size: 14px;\n}\n.ContactForm > input.ContactForm-error {\n  border-color: #b30e2f;\n}", ""]);
 
 	// exports
 

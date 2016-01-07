@@ -16,17 +16,17 @@
     <script type="text/babel">
       // To get started with this tutorial running your own code, simply remove
       // the script tag loading scripts/example.js and start writing code here.
-      var CommentBox = React.createClass({
+      var CommentBox = React.createClass({displayName: 'CommentBox',
         render: function() {
           return (
-            <div className="commentBox">
-              Hello, world! I am a CommentBox.
-            </div>
+            React.createElement('div', {className: "commentBox"},
+              "Hello, world! I am a CommentBox."
+            )
           );
         }
       });
       ReactDOM.render(
-        <CommentBox />,
+        React.createElement(CommentBox, null),
         document.getElementById('content')
       );
     </script>

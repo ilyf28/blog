@@ -23,6 +23,10 @@ Route::get('/james', function () {
     return view('james');
 });
 
+Route::get('/tutorial', function () {
+    return view('tutorial');
+});
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes

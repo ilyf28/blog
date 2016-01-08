@@ -27,6 +27,22 @@ Route::get('/tutorial', function () {
     return view('tutorial');
 });
 
+Route::group(['prefix' => 'api'], function () {
+	Route::get('comments', function() {
+		/* // comments.json
+		[
+		  {"author": "Pete Hunt", "text": "This is one comment"},
+		  {"author": "Jordan Walke", "text": "This is *another* comment"}
+		]
+		*/
+		$result = [
+			["author"=> "Pete Hunt", "text"=> "This is one comment"],
+			["author"=> "Jordan Walke", "text"=> "This is *another* comment"]
+		];
+		return response()->json($result);
+	});
+});
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
